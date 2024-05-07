@@ -1,15 +1,18 @@
-package entity;
+package com.matriculasapi.matriculas.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity @NoArgsConstructor
 @AllArgsConstructor
 @Table(name= "alunos")
+@Getter @Setter
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +29,5 @@ public class Aluno {
 }
 
 enum Sexo {
-    MASCULINO, FEMININO;
+    M, F;
 }
