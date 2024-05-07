@@ -1,5 +1,6 @@
 package com.matriculasapi.matriculas.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -26,14 +29,12 @@ public class AlunoCreateDto {
     private String cpf;
 
     @NotBlank
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     @NotBlank
     @Pattern(regexp = "M|F")
     private String sexo;
 
-    @NotBlank
-    private boolean ativo;
 }
 
 
