@@ -25,9 +25,11 @@ public class Aluno {
     @Column(name = "data_nascimento")
     private Date dataNascimento;
     @Column
-    private boolean ativo;
+    private boolean ativo = true;
+
+    public enum Sexo {
+        M, F;
+    }
 }
 
-enum Sexo {
-    M, F;
-}
+

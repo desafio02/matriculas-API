@@ -30,7 +30,7 @@ public class AlunoCreateDto {
 
     @NotBlank
     @Pattern(regexp = "M|F")
-    private String Sexo;
+    private String sexo;
 
     @NotBlank
     private boolean ativo;
