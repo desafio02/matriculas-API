@@ -21,23 +21,20 @@ public class AlunoService {
 
         Optional<Aluno> alunoOptional = alunoRepository.findByCpf(cpf);
 
-        if (alunoOptional.isPresent()) {
+        try{
+            if (alunoOptional.isPresent()) {
 
-            Aluno aluno = alunoOptional.get();
-            if(aluno.isAtivo()) {
-                aluno.setAtivo(false);
-            } else {
-                aluno.setAtivo(true);
+                Aluno aluno = alunoOptional.get();
+                if(aluno.isAtivo()) {
+                    aluno.setAtivo(false);
+                } else {
+                    aluno.setAtivo(true);
+                }
+                return alunoRepository.save(aluno);
             }
-            return alunoRepository.save(aluno);
-        } else {
+            return null;
+        } catch (Exception e) {
             return null;
         }
     }
-
-    /*public void alterarStatusAtivo(Long id, boolean ativo) {
-        Aluno aluno = alunoRepository.findById(id).orElseThrow();
-        aluno.setAtivo(ativo);
-        alunoRepository.save(aluno);
-    }*/
 }
