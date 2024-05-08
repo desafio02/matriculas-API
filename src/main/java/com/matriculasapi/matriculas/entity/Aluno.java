@@ -22,7 +22,7 @@ public class Aluno {
     @Column
     private String nome;
     @Size(min = 11, max = 11)
-    @Column
+    @Column(nullable = false, unique = true)
     private String cpf;
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;

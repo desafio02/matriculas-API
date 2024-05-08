@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Alunos", description = "Contém todas as operações relativas aos recursos para cadastro, edição e leitura de um aluno")
 @RequiredArgsConstructor
@@ -27,6 +24,12 @@ public class AlunoController {
         Aluno aluno = alunoService.salvar(AlunoMapper.paraAluno(dto));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(AlunoMapper.paraDto(aluno));
+    }
+
+    @PatchMapping("/{cpf}")
+    public ResponseEntity<Void> alterarStatusAtivo(@PathVariable String cpf){
+        alunoService.alterarStatusAtivo(cpf);
+        return ResponseEntity.noContent().build();
     }
 
 }

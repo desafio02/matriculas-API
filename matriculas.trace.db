@@ -110,3 +110,6 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 50 more
+2024-05-07 18:47:03.835439-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM ALUNOS WHERE ID=10"; expected "identifier"; SQL statement:
+DELETE * FROM ALUNOS WHERE ID=10 [42001-224]
