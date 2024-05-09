@@ -18,11 +18,12 @@ public class Matricula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "curso_id")
-    private Curso curso;
+    @Column(name = "curso_id")
+    private Long cursoId;
 
-    @ManyToOne
-    @JoinColumn(name = "aluno_id")
-    private Aluno aluno;
+    @Column(name = "aluno_id")
+    private Long alunoId;
+
+    @Column
+    private Boolean status = true;
 }

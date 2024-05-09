@@ -37,4 +37,17 @@ public class AlunoService {
             return null;
         }
     }
+
+    public Aluno buscarPorCpf(String cpf) {
+        Optional<Aluno> alunoOptional = alunoRepository.findByCpf(cpf);
+        try {
+            if(alunoOptional.isPresent()) {
+                Aluno aluno = alunoOptional.get();
+                return aluno;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
 }

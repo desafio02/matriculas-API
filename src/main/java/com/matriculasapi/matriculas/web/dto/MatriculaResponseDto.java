@@ -1,5 +1,7 @@
 package com.matriculasapi.matriculas.web.dto;
 
+import com.matriculasapi.matriculas.client.cursos.Curso;
+import com.matriculasapi.matriculas.client.cursos.CursoClient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MatriculaResponseDto {
-    private String curso;
+    private String cursoId;
     private String professor;
     private Integer totalAlunos;
     private List<AlunoResponseDto> alunos;
