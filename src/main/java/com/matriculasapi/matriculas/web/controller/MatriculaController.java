@@ -4,11 +4,19 @@ import com.matriculasapi.matriculas.client.cursos.CursoClient;
 import com.matriculasapi.matriculas.entity.Matricula;
 import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.service.MatriculaService;
+import com.matriculasapi.matriculas.web.dto.AlunoResponseDto;
 import com.matriculasapi.matriculas.web.dto.MatriculaCreateDto;
 import com.matriculasapi.matriculas.web.dto.MatriculaResponseDto;
 import com.matriculasapi.matriculas.web.dto.MatriculaResponseListAlunoDto;
 import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
 import com.matriculasapi.matriculas.web.dto.mapper.MatriculaMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Matriculas", description = "Contém todas as operações relativas aos recursos para cadastro, edição e leitura de uma matricula")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/matriculas")
 @RestController
@@ -26,18 +35,38 @@ public class MatriculaController {
     private final CursoClient cursoClient;
     private final AlunoService alunoService;
 
+    @Operation(summary = "Cadastrar uma nova matricula",
+            description = "Endpoint que cadastra uma nova matricula.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Matricula cadastrada com sucesso!",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MatriculaResponseDto.class)))
+    })
     @PostMapping
     public ResponseEntity<MatriculaResponseDto> salvarMatricula(@RequestBody @Valid MatriculaCreateDto dto){
         Matricula matricula = matriculaService.salvar(MatriculaMapper.paraMatricula(dto, alunoService, cursoClient));
         return ResponseEntity.status(HttpStatus.CREATED).body(MatriculaMapper.paraDto(matricula, alunoService, cursoClient));
     }
 
+    @Operation(summary = "Atualizar o status de uma matricula",
+            description = "Endpoint para atualizar o status de uma matricula pelo id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Status da matricula alterada com sucesso!",
+                    content = @Content(mediaType = "application/json"))
+    })
     @PatchMapping("/{id}")
     public ResponseEntity<Void> alterarStatusAtivo(@PathVariable Long id){
         matriculaService.alterarStatusAtivo(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Recuperar um usuário pelo id",
+            description = "Requisição exige um Bearer Token. Acesso restrito a ADMIN|CLIENTE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = MatriculaResponseListAlunoDto.class)))
+    })
     @GetMapping("/{curso}")
     public ResponseEntity<MatriculaResponseListAlunoDto> consultarCurso(@PathVariable String curso) {
         MatriculaResponseListAlunoDto dto = new MatriculaResponseListAlunoDto();
