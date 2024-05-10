@@ -1,7 +1,6 @@
 package com.matriculasapi.matriculas.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +18,7 @@ public class Aluno {
     private Long id;
     @Column
     private String nome;
-    @Size(min = 11, max = 11)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;

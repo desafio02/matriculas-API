@@ -1,6 +1,5 @@
 package com.matriculasapi.matriculas.entity;
 
-import com.matriculasapi.matriculas.client.cursos.Curso;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +20,9 @@ public class Matricula {
     @Column(name = "curso_id")
     private Long cursoId;
 
-    @Column(name = "aluno_id")
+    @Column(name = "aluno_id", unique = true)
     private Long alunoId;
 
     @Column
-    private Boolean status = true;
+    private boolean status = true;
 }

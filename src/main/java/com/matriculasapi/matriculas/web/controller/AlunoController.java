@@ -6,6 +6,7 @@ import com.matriculasapi.matriculas.web.dto.AlunoCreateDto;
 import com.matriculasapi.matriculas.web.dto.AlunoResponseDto;
 import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AlunoController {
 
     private final AlunoService alunoService;
     @PostMapping
-    public ResponseEntity<AlunoResponseDto> salvar(@RequestBody AlunoCreateDto dto){
+    public ResponseEntity<AlunoResponseDto> salvar(@RequestBody @Valid AlunoCreateDto dto){
 
         Aluno aluno = alunoService.salvar(AlunoMapper.paraAluno(dto));
 
