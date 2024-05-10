@@ -5,8 +5,6 @@ import com.matriculasapi.matriculas.repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class AlunoService {
@@ -18,36 +16,28 @@ public class AlunoService {
     }
 
     public Aluno alterarStatusAtivo(String cpf) {
+        Aluno aluno = alunoRepository.findByCpf(cpf).orElseThrow(
+                () -> new RuntimeException("Número de CPF não encontrado")
+        );
 
-        Optional<Aluno> alunoOptional = alunoRepository.findByCpf(cpf);
-
-        try{
-            if (alunoOptional.isPresent()) {
-
-                Aluno aluno = alunoOptional.get();
-                if(aluno.isAtivo()) {
-                    aluno.setAtivo(false);
-                } else {
-                    aluno.setAtivo(true);
-                }
-                return alunoRepository.save(aluno);
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
+        if (aluno.isAtivo()) {
+            aluno.setAtivo(false);
+        } else {
+            aluno.setAtivo(true);
         }
+
+        return alunoRepository.save(aluno);
     }
 
     public Aluno buscarPorCpf(String cpf) {
-        Optional<Aluno> alunoOptional = alunoRepository.findByCpf(cpf);
-        try {
-            if(alunoOptional.isPresent()) {
-                Aluno aluno = alunoOptional.get();
-                return aluno;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
+        return alunoRepository.findByCpf(cpf).orElseThrow(
+                () -> new RuntimeException("Número de CPF não encontrado")
+        );
+    }
+
+    public Aluno buscarPorId(Long alunoId) {
+        return alunoRepository.findById(alunoId).orElseThrow(
+                () -> new RuntimeException("Número de Id não encontrado")
+        );
     }
 }

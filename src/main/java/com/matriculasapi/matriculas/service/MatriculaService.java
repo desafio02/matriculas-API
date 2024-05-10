@@ -1,12 +1,12 @@
 package com.matriculasapi.matriculas.service;
 
-import com.matriculasapi.matriculas.client.cursos.Curso;
 import com.matriculasapi.matriculas.client.cursos.CursoClient;
-import com.matriculasapi.matriculas.entity.Aluno;
 import com.matriculasapi.matriculas.entity.Matricula;
 import com.matriculasapi.matriculas.repository.MatriculaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -17,32 +17,35 @@ public class MatriculaService {
     private final CursoClient cursoClient;
     private final AlunoService alunoService;
 
-
-    public Matricula salvar(String nomeCurso, String cpf) {
-        Matricula matricula = new Matricula();
-        Curso curso = cursoClient.buscarCursos(nomeCurso);
-        Aluno aluno = alunoService.buscarPorCpf(cpf);
-        if(curso == null) {
-            throw new RuntimeException("Curso não encontrado");
-        }
-        if (aluno == null){
-            throw new RuntimeException("Aluno não encontrado");
-        }else{
-            matricula.setCursoId(curso.getId());
-            matricula.setAlunoId(aluno.getId());
-            return matriculaRepository.save(matricula);
+    public Matricula salvar(Matricula matricula) {
+        if (!cursoClient.buscarCursosPorId(matricula.getCursoId()).isAtivo()) {
+            throw new RuntimeException("Curso inativado, não é possível realizar a matrícula para esse curso");
         }
 
+        if(!alunoService.buscarPorId(matricula.getAlunoId()).isAtivo()) {
+            throw new RuntimeException("Aluno inativo, não é possível realizar a matrícula");
+        }
+
+        if (matriculaRepository.countByCursoId(matricula.getCursoId()) == 10) {
+            throw new RuntimeException("Limite de 10 matrículas atingido, não é possível realizar a matrícula para esse curso");
+        }
+
+        return matriculaRepository.save(matricula);
     }
 
     public void alterarStatusAtivo(Long id) {
         Matricula matricula = matriculaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Matrícula não encontrada"));
-        if(matricula.getStatus() == true){
+        if(matricula.isStatus()){
             matricula.setStatus(false);
         }else{
             matricula.setStatus(true);
         }
         matriculaRepository.save(matricula);
+    }
+
+    public List<Matricula> buscarMatriculasPorCursoId(Long id) {
+        return matriculaRepository.findByCursoId(id)
+                .orElseThrow(() -> new RuntimeException("Nenhuma matrícula encontrada para o curso solicitado"));
     }
 }
