@@ -67,13 +67,4 @@ public class ExcecoesPersonalizadas extends ResponseEntityExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new MensagemErro(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
-
-    @ExceptionHandler(ExcecaoBuscarCursoInvalido.class)
-    public final ResponseEntity<MensagemErro> handleCursoInvalidoException(ExcecaoBuscarCursoInvalido ex, HttpServletRequest request) {
-        log.error("Erro na API", ex);
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new MensagemErro(request, HttpStatus.NOT_FOUND, ex.getMessage()));
-    }
 }

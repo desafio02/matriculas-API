@@ -29,7 +29,7 @@ public class MatriculaService {
                 throw new ExcecaoCursoInativo("Curso inativado, não é possível realizar a matrícula para esse curso");
             }
         } catch (FeignException.NotFound e) {
-            throw new ExcecaoBuscarCursoInvalido(e.status(),e.getMessage());
+            throw new ExcecaoNaoEncontrado(e.getMessage());
         }
 
 

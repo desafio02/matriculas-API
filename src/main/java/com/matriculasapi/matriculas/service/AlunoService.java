@@ -6,7 +6,6 @@ import com.matriculasapi.matriculas.exception.ExcecaoDadoDuplicado;
 import com.matriculasapi.matriculas.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
