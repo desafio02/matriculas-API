@@ -2,14 +2,12 @@ package com.matriculasapi.matriculas.service;
 
 import com.matriculasapi.matriculas.client.cursos.CursoClient;
 import com.matriculasapi.matriculas.entity.Matricula;
-import com.matriculasapi.matriculas.exception.ExcecaoAlunoInativo;
-import com.matriculasapi.matriculas.exception.ExcecaoCursoInativo;
-import com.matriculasapi.matriculas.exception.ExcecaoBuscarCursoInvalido;
-import com.matriculasapi.matriculas.exception.ExcecaoLimiteAlunos;
+import com.matriculasapi.matriculas.exception.*;
 import com.matriculasapi.matriculas.repository.MatriculaRepository;
 import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +41,12 @@ public class MatriculaService {
             throw new ExcecaoLimiteAlunos("Limite de 10 matrículas atingido, não é possível realizar a matrícula para esse curso");
         }
 
-        return matriculaRepository.save(matricula);
+        try {
+            return matriculaRepository.save(matricula);
+        } catch (DataIntegrityViolationException e) {
+            throw new ExcecaoDadoDuplicado("Aluno já cadastrado no curso informado", e);
+        }
+
     }
 
     @Transactional

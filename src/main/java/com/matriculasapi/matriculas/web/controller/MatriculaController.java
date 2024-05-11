@@ -10,6 +10,7 @@ import com.matriculasapi.matriculas.web.dto.MatriculaResponseDto;
 import com.matriculasapi.matriculas.web.dto.MatriculaResponseListAlunoDto;
 import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
 import com.matriculasapi.matriculas.web.dto.mapper.MatriculaMapper;
+import com.matriculasapi.matriculas.web.exception.MensagemErro;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,7 +41,18 @@ public class MatriculaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Matricula cadastrada com sucesso!",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MatriculaResponseDto.class)))
+                            schema = @Schema(implementation = MatriculaResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "409", description = "Aluno já cadastrado no curso informado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping
     public ResponseEntity<MatriculaResponseDto> salvarMatricula(@RequestBody @Valid MatriculaCreateDto dto){
@@ -51,7 +63,14 @@ public class MatriculaController {
     @Operation(summary = "Atualizar o status de uma matricula",
             description = "Endpoint para atualizar o status de uma matricula pelo id.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Status da matricula alterada com sucesso!",
+            @ApiResponse(responseCode = "204", description = "Status da matricula alterada com sucesso!"),
+            @ApiResponse(responseCode = "400", description = "Solicitação inválida",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "404", description = "Matricula não encontrada",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
                     content = @Content(mediaType = "application/json"))
     })
     @PatchMapping("/{id}")
@@ -60,12 +79,17 @@ public class MatriculaController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Recuperar um usuário pelo id",
-            description = "Requisição exige um Bearer Token. Acesso restrito a ADMIN|CLIENTE")
+    @Operation(summary = "Buscar um curso pelo nome",
+            description = "Enpoint para buscar um curso pelo nome")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
                 content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = MatriculaResponseListAlunoDto.class)))
+                        schema = @Schema(implementation = MatriculaResponseListAlunoDto.class))),
+            @ApiResponse(responseCode = "404", description = "Curso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                    content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/{curso}")
     public ResponseEntity<MatriculaResponseListAlunoDto> consultarCurso(@PathVariable String curso) {

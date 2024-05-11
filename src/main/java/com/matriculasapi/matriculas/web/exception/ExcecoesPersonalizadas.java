@@ -23,8 +23,8 @@ public class ExcecoesPersonalizadas extends ResponseEntityExceptionHandler {
                 .body(new MensagemErro(request, HttpStatus.CONFLICT, ex.getMessage()));
     }
 
-    @ExceptionHandler(ExcecaoCpfJaCadastrado.class)
-    public final ResponseEntity<MensagemErro> handleCpfJaCadstradoException(ExcecaoCpfJaCadastrado ex, HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoDadoDuplicado.class)
+    public final ResponseEntity<MensagemErro> handleCpfJaCadstradoException(ExcecaoDadoDuplicado ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)

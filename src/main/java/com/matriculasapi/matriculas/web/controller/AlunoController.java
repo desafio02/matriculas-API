@@ -5,6 +5,7 @@ import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.web.dto.AlunoCreateDto;
 import com.matriculasapi.matriculas.web.dto.AlunoResponseDto;
 import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
+import com.matriculasapi.matriculas.web.exception.MensagemErro;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +31,18 @@ public class AlunoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Aluno cadastrado com sucesso!",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoResponseDto.class)))
+                            schema = @Schema(implementation = AlunoResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "409", description = "Aluno com cpf já existente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                    content = @Content(mediaType = "application/json"))
     })
     @PostMapping
     public ResponseEntity<AlunoResponseDto> salvar(@RequestBody @Valid AlunoCreateDto dto){
@@ -44,6 +56,14 @@ public class AlunoController {
             description = "Endpoint para atualizar o status de um aluno pelo cpf.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Status do aluno alterado com sucesso!",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Solicitação inválida",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "404", description = "Aluno não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
                     content = @Content(mediaType = "application/json"))
     })
     @PatchMapping("/{cpf}")
