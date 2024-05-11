@@ -32,20 +32,25 @@ public class MatriculaService {
             throw new ExcecaoNaoEncontrado(e.getMessage());
         }
 
-
         if(!alunoService.buscarPorId(matricula.getAlunoId()).isAtivo()) {
             throw new ExcecaoAlunoInativo("Aluno inativo, não é possível realizar a matrícula");
         }
 
-        if (matriculaRepository.countByCursoId(matricula.getCursoId()) >= 10) {
+        List<Matricula> matriculas = buscarMatriculasPorCursoId(matricula.getCursoId());
+
+        long alunosAtivos = matriculas.stream().filter(x -> alunoService.buscarPorId(x.getAlunoId()).isAtivo()).count();
+
+        if (alunosAtivos >= 10) {
             throw new ExcecaoLimiteAlunos("Limite de 10 matrículas atingido, não é possível realizar a matrícula para esse curso");
         }
 
-        try {
-            return matriculaRepository.save(matricula);
-        } catch (DataIntegrityViolationException e) {
-            throw new ExcecaoDadoDuplicado("Aluno já cadastrado no curso informado", e);
-        }
+        matriculas.forEach(x -> {
+                    if (x.getAlunoId().equals(matricula.getAlunoId())) {
+                        throw new ExcecaoDadoDuplicado("Aluno já cadastrado no curso informado");
+                    }
+        });
+
+        return matriculaRepository.save(matricula);
 
     }
 
@@ -53,11 +58,7 @@ public class MatriculaService {
     public void alterarStatusAtivo(Long id) {
         Matricula matricula = matriculaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Matrícula não encontrada"));
-        if(matricula.isStatus()){
-            matricula.setStatus(false);
-        }else{
-            matricula.setStatus(true);
-        }
+        matricula.setStatus(!matricula.isStatus());
         matriculaRepository.save(matricula);
     }
 
@@ -65,5 +66,11 @@ public class MatriculaService {
     public List<Matricula> buscarMatriculasPorCursoId(Long id) {
         return matriculaRepository.findByCursoId(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhuma matrícula encontrada para o curso solicitado"));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Matricula> buscarMatriculasPorAlunoId(Long id) {
+        return matriculaRepository.findByAlunoId(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhuma matrícula encontrada para o aluno solicitado"));
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
-    int countByCursoId(Long cursoId);
-
     Optional<List<Matricula>> findByCursoId(Long id);
+
+    Optional<List<Matricula>> findByAlunoId(Long id);
 }

@@ -35,9 +35,6 @@ public class AlunoController {
             @ApiResponse(responseCode = "400", description = "Requisição inválida",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
             @ApiResponse(responseCode = "409", description = "Aluno com cpf já existente",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MensagemErro.class)))

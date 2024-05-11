@@ -20,7 +20,7 @@ public class Matricula {
     @Column(name = "curso_id")
     private Long cursoId;
 
-    @Column(name = "aluno_id", unique = true)
+    @Column(name = "aluno_id")
     private Long alunoId;
 
     @Column
