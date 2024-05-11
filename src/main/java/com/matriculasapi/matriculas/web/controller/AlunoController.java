@@ -40,9 +40,7 @@ public class AlunoController {
                             schema = @Schema(implementation = MensagemErro.class))),
             @ApiResponse(responseCode = "409", description = "Aluno com cpf já existente",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
-                    content = @Content(mediaType = "application/json"))
+                            schema = @Schema(implementation = MensagemErro.class)))
     })
     @PostMapping
     public ResponseEntity<AlunoResponseDto> salvar(@RequestBody @Valid AlunoCreateDto dto){
@@ -62,9 +60,7 @@ public class AlunoController {
                             schema = @Schema(implementation = MensagemErro.class))),
             @ApiResponse(responseCode = "404", description = "Aluno não encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
-                    content = @Content(mediaType = "application/json"))
+                            schema = @Schema(implementation = MensagemErro.class)))
     })
     @PatchMapping("/{cpf}")
     public ResponseEntity<Void> alterarStatusAtivo(@PathVariable String cpf){

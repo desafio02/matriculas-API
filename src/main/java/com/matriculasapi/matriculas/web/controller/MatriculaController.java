@@ -50,9 +50,7 @@ public class MatriculaController {
                             schema = @Schema(implementation = MensagemErro.class))),
             @ApiResponse(responseCode = "409", description = "Aluno já cadastrado no curso informado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
-                    content = @Content(mediaType = "application/json"))
+                            schema = @Schema(implementation = MensagemErro.class)))
     })
     @PostMapping
     public ResponseEntity<MatriculaResponseDto> salvarMatricula(@RequestBody @Valid MatriculaCreateDto dto){
@@ -69,9 +67,7 @@ public class MatriculaController {
                             schema = @Schema(implementation = MensagemErro.class))),
             @ApiResponse(responseCode = "404", description = "Matricula não encontrada",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
-                    content = @Content(mediaType = "application/json"))
+                            schema = @Schema(implementation = MensagemErro.class)))
     })
     @PatchMapping("/{id}")
     public ResponseEntity<Void> alterarStatusAtivo(@PathVariable Long id){
@@ -87,9 +83,7 @@ public class MatriculaController {
                         schema = @Schema(implementation = MatriculaResponseListAlunoDto.class))),
             @ApiResponse(responseCode = "404", description = "Curso não encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
-                    content = @Content(mediaType = "application/json"))
+                            schema = @Schema(implementation = MensagemErro.class)))
     })
     @GetMapping("/{curso}")
     public ResponseEntity<MatriculaResponseListAlunoDto> consultarCurso(@PathVariable String curso) {
