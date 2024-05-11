@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -21,6 +22,7 @@ public class Aluno {
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
     @Column(name = "data_nascimento")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
     @Column
     private boolean ativo = true;
