@@ -14,57 +14,66 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ExcecoesPersonalizadas extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(AlunoInativoException.class)
-    public final ResponseEntity<MessageError> handleAlunoInativoException(AlunoInativoException ex,  HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoAlunoInativo.class)
+    public final ResponseEntity<MensagemErro> handleAlunoInativoException(ExcecaoAlunoInativo ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new MessageError(request, HttpStatus.CONFLICT, ex.getMessage()));
+                .body(new MensagemErro(request, HttpStatus.CONFLICT, ex.getMessage()));
     }
 
-    @ExceptionHandler(CpfJaCadstradoException.class)
-    public final ResponseEntity<MessageError> handleCpfJaCadstradoException(CpfJaCadstradoException ex,  HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoCpfJaCadastrado.class)
+    public final ResponseEntity<MensagemErro> handleCpfJaCadstradoException(ExcecaoCpfJaCadastrado ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new MessageError(request, HttpStatus.CONFLICT, ex.getMessage()));
+                .body(new MensagemErro(request, HttpStatus.CONFLICT, ex.getMessage()));
     }
 
-    @ExceptionHandler(CpfNaoEncontradoException.class)
-    public final ResponseEntity<MessageError> handleCpfNaoEncontradoException(CpfNaoEncontradoException ex,  HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoCpfNaoEncontrado.class)
+    public final ResponseEntity<MensagemErro> handleCpfNaoEncontradoException(ExcecaoCpfNaoEncontrado ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new MessageError(request, HttpStatus.NOT_FOUND, ex.getMessage()));
+                .body(new MensagemErro(request, HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
-    @ExceptionHandler(CursoInativoException.class)
-    public final ResponseEntity<MessageError> handleCursoInativoException(CursoInativoException ex,  HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoCursoInativo.class)
+    public final ResponseEntity<MensagemErro> handleCursoInativoException(ExcecaoCursoInativo ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new MessageError(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+                .body(new MensagemErro(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public final ResponseEntity<MessageError> handleEntityNotFoundException(EntityNotFoundException ex,  HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoNaoEncontrado.class)
+    public final ResponseEntity<MensagemErro> handleEntityNotFoundException(ExcecaoNaoEncontrado ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new MessageError(request, HttpStatus.NOT_FOUND, ex.getMessage()));
+                .body(new MensagemErro(request, HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
-    @ExceptionHandler(LimiteAlunosException.class)
-    public final ResponseEntity<MessageError> handleLimiteAlunosException(LimiteAlunosException ex,  HttpServletRequest request) {
+    @ExceptionHandler(ExcecaoLimiteAlunos.class)
+    public final ResponseEntity<MensagemErro> handleLimiteAlunosException(ExcecaoLimiteAlunos ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new MessageError(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+                .body(new MensagemErro(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
+    @ExceptionHandler(ExcecaoBuscarCursoInvalido.class)
+    public final ResponseEntity<MensagemErro> handleCursoInvalidoException(ExcecaoBuscarCursoInvalido ex, HttpServletRequest request) {
+        log.error("Erro na API", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new MensagemErro(request, HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 }

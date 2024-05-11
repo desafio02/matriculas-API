@@ -2,6 +2,7 @@ package com.matriculasapi.matriculas.web.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -9,20 +10,21 @@ import org.springframework.validation.FieldError;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageError {
+@Getter
+public class MensagemErro {
     private String path;
     private String method;
     private int status;
     private String statusText;
     private String message;
 
-    public MessageError() {
+    public MensagemErro() {
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
 
-    public MessageError(HttpServletRequest request, HttpStatus status, String message) {
+    public MensagemErro(HttpServletRequest request, HttpStatus status, String message) {
         this.path = request.getRequestURI();
         this.method = request.getMethod();
         this.status = status.value();
@@ -30,7 +32,7 @@ public class MessageError {
         this.message = message;
     }
 
-    public MessageError(HttpServletRequest request, HttpStatus status, String message, BindingResult result) {
+    public MensagemErro(HttpServletRequest request, HttpStatus status, String message, BindingResult result) {
         this.path = request.getRequestURI();
         this.method = request.getMethod();
         this.status = status.value();
