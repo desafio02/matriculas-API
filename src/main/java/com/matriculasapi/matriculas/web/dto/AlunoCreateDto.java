@@ -1,5 +1,6 @@
 package com.matriculasapi.matriculas.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -27,6 +28,7 @@ public class AlunoCreateDto {
     private String cpf;
 
     @NotNull
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dataNascimento;
 
     @NotBlank
