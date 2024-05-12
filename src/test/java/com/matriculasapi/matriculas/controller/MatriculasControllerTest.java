@@ -1,4 +1,4 @@
-package com.matriculasapi.matriculas;
+package com.matriculasapi.matriculas.controller;
 
 import com.matriculasapi.matriculas.client.cursos.Curso;
 import com.matriculasapi.matriculas.client.cursos.CursoClient;
@@ -8,25 +8,23 @@ import com.matriculasapi.matriculas.repository.MatriculaRepository;
 import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.service.MatriculaService;
 import com.matriculasapi.matriculas.web.controller.MatriculaController;
-import com.matriculasapi.matriculas.web.dto.MatriculaResponseListAlunoDto;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.matriculasapi.matriculas.common.entity.AlunoConstants.ALUNO;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

@@ -11,8 +11,8 @@ public class AlunoMapper {
         return new ModelMapper().map(createDto, Aluno.class);
     }
 
-    public static AlunoResponseDto paraDto(Aluno vaga) {
-        return new ModelMapper().map(vaga, AlunoResponseDto.class);
+    public static AlunoResponseDto paraDto(Aluno aluno) {
+        return new ModelMapper().map(aluno, AlunoResponseDto.class);
     }
 }
 
