@@ -18,7 +18,7 @@ public class ExcecoesPersonalizadas extends ResponseEntityExceptionHandler {
     public final ResponseEntity<MensagemErro> handleAlunoInativoException(ExcecaoAlunoInativo ex, HttpServletRequest request) {
         log.error("Erro na API", ex);
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new MensagemErro(request, HttpStatus.CONFLICT, ex.getMessage()));
     }
