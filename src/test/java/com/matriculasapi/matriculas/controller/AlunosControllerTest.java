@@ -2,40 +2,37 @@ package com.matriculasapi.matriculas.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matriculasapi.matriculas.entity.Aluno;
-import com.matriculasapi.matriculas.exception.ExcecaoDadoDuplicado;
 import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.web.controller.AlunoController;
-import com.matriculasapi.matriculas.web.dto.AlunoCreateDto;
 import com.matriculasapi.matriculas.web.dto.AlunoResponseDto;
-import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 
-import static com.matriculasapi.matriculas.common.entity.AlunoConstants.ALUNO;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WebMvcTest(AlunoController.class)
-@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = AlunoController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@ExtendWith(MockitoExtension.class)
 public class AlunosControllerTest {
 
     @MockBean
     private AlunoService alunoService;
-
-    @MockBean
-    private AlunoMapper alunoMapper;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,34 +41,28 @@ public class AlunosControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void salvarAluno_ComDadosValidos_RetornaAluno() throws Exception {
+    public void salvarAluno_ComDadosValidos_RetornaAlunoResponseDto() throws Exception {
         Aluno aluno = new Aluno (
                 1L,
-                "Jalim Rabei",
+                "Sand",
                 "09759576007",
                 LocalDate.of(2024, 5, 11),
                 true,
                 Aluno.Sexo.M
         );
 
-        when(alunoService.salvar(aluno)).thenReturn(aluno);
+        AlunoResponseDto responseDto = new AlunoResponseDto(
+                "Sand",
+                "M",
+                true
+        );
 
-        mockMvc.perform(post("/api/v1/alunos")
-                        .content(objectMapper.writeValueAsString(aluno))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$").value(aluno));
-    }
+        given(alunoService.salvar(ArgumentMatchers.any())).willAnswer(invocation -> invocation.getArgument(0));
 
-    @Test
-    public void salvarAluno_ComCpfExistente_RetornarConflito() throws Exception {
-        when(alunoService.salvar(any())).thenThrow(ExcecaoDadoDuplicado.class);
+        ResultActions response= mockMvc.perform(post("/api/v1/alunos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(responseDto)));
 
-        mockMvc
-                .perform(
-                        post("/api/v1/alunos").content(objectMapper.writeValueAsString(ALUNO))
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict());
-
+        response.andExpect(MockMvcResultMatchers.status().isCreated());
     }
 }

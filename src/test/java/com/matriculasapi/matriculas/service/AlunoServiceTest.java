@@ -2,20 +2,25 @@ package com.matriculasapi.matriculas.service;
 
 import com.matriculasapi.matriculas.entity.Aluno;
 import com.matriculasapi.matriculas.exception.ExcecaoCpfNaoEncontrado;
+import com.matriculasapi.matriculas.exception.ExcecaoDadoDuplicado;
+import com.matriculasapi.matriculas.exception.ExcecaoNaoEncontrado;
 import com.matriculasapi.matriculas.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.matriculasapi.matriculas.common.entity.AlunoConstants.ALUNO_INVALIDO;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.matriculasapi.matriculas.common.entity.AlunoConstants.ALUNO;
@@ -75,15 +80,6 @@ public class AlunoServiceTest {
 
     @Test
     public void retornarAluno_ComCpfInexistente_ReturnoVazio() {
-        when(alunoRepository.findByCpf("82746541020")).thenReturn(Optional.empty());
-
-        Throwable thrown = assertThrows(ExcecaoCpfNaoEncontrado.class, () -> alunoService.buscarPorCpf("82746541020"));
-
-        assertEquals("Número de CPF não encontrado", thrown.getMessage());
-    }
-
-    @Test
-    public void AlterarStatus_ComCpfValido_ReturnoVazio() {
         when(alunoRepository.findByCpf("82746541020")).thenReturn(Optional.empty());
 
         Throwable thrown = assertThrows(ExcecaoCpfNaoEncontrado.class, () -> alunoService.buscarPorCpf("82746541020"));
