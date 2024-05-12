@@ -58,9 +58,13 @@ public class MatriculaService {
     public void alterarStatusAtivo(Long id) {
         Matricula matricula = matriculaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Matrícula não encontrada"));
+        if (!alunoService.buscarPorId(matricula.getAlunoId()).isAtivo()) {
+            throw new ExcecaoAlunoInativo("Matricula com aluno inativo");
+        }
         matricula.setStatus(!matricula.isStatus());
         matriculaRepository.save(matricula);
     }
+
 
     @Transactional(readOnly = true)
     public List<Matricula> buscarMatriculasPorCursoId(Long id) {
