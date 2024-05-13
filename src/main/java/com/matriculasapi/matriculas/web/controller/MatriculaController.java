@@ -49,12 +49,6 @@ public class MatriculaController {
             @ApiResponse(responseCode = "409", description = "Aluno já cadastrado no curso informado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "422", description = "Limite de 10 matrículas atingido, não é possível realizar a matrícula para esse curso",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "444", description = "Curso inativado, não é possível realizar a matrícula para esse curso",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class))),
     })
     @PostMapping
     public ResponseEntity<MatriculaResponseDto> salvarMatricula(@RequestBody @Valid MatriculaCreateDto dto){
@@ -88,9 +82,6 @@ public class MatriculaController {
             @ApiResponse(responseCode = "404", description = "Curso não encontrado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MensagemErro.class))),
-            @ApiResponse(responseCode = "444", description = "Nenhuma matrícula encontrada para o curso solicitado",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MensagemErro.class)))
     })
     @GetMapping("/{curso}")
     public ResponseEntity<MatriculaResponseListAlunoDto> consultarCurso(@PathVariable String curso) {
