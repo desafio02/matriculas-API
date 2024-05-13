@@ -49,6 +49,9 @@ public class MatriculaController {
             @ApiResponse(responseCode = "409", description = "Aluno já cadastrado no curso informado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "503", description = "Serviço indisponível",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
     })
     @PostMapping
     public ResponseEntity<MatriculaResponseDto> salvarMatricula(@RequestBody @Valid MatriculaCreateDto dto){
@@ -80,6 +83,9 @@ public class MatriculaController {
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = MatriculaResponseListAlunoDto.class))),
             @ApiResponse(responseCode = "404", description = "Curso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MensagemErro.class))),
+            @ApiResponse(responseCode = "503", description = "Serviço indisponível",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MensagemErro.class))),
     })
