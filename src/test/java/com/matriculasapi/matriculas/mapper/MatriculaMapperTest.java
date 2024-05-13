@@ -6,25 +6,16 @@ import com.matriculasapi.matriculas.entity.Aluno;
 import com.matriculasapi.matriculas.entity.Matricula;
 import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.service.MatriculaService;
-import com.matriculasapi.matriculas.web.dto.AlunoCreateDto;
-import com.matriculasapi.matriculas.web.dto.AlunoResponseDto;
 import com.matriculasapi.matriculas.web.dto.MatriculaCreateDto;
-import com.matriculasapi.matriculas.web.dto.MatriculaResponseDto;
-import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
 import com.matriculasapi.matriculas.web.dto.mapper.MatriculaMapper;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 
-import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

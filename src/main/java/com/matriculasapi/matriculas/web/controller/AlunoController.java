@@ -50,7 +50,7 @@ public class AlunoController {
     @Operation(summary = "Atualizar o status de um aluno",
             description = "Endpoint para atualizar o status de um aluno pelo cpf.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Status do aluno alterado com sucesso!",
+            @ApiResponse(responseCode = "204", description = "Status do aluno alterado com sucesso!",
                     content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Solicitação inválida",
                     content = @Content(mediaType = "application/json",

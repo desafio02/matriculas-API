@@ -7,7 +7,6 @@ import com.matriculasapi.matriculas.repository.MatriculaRepository;
 import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,11 +69,5 @@ public class MatriculaService {
     public List<Matricula> buscarMatriculasPorCursoId(Long id) {
         return matriculaRepository.findByCursoId(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhuma matrícula encontrada para o curso solicitado"));
-    }
-
-    @Transactional(readOnly = true)
-    public List<Matricula> buscarMatriculasPorAlunoId(Long id) {
-        return matriculaRepository.findByAlunoId(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhuma matrícula encontrada para o aluno solicitado"));
     }
 }

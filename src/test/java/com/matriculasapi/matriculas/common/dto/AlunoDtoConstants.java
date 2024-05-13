@@ -7,13 +7,13 @@ import java.time.LocalDate;
 
 public class AlunoDtoConstants {
     public static final AlunoCreateDto ALUNOCREATEDTO = new AlunoCreateDto(
-            "Jalim Rabei",
+            "Joao Silva",
             "09759576007",
             LocalDate.of(2024, 5, 11),
             "M"
     );
     public static final AlunoResponseDto ALUNORESPONSEDTO = new AlunoResponseDto(
-            "Jalim Rabei",
+            "Joao Silva",
             "M",
             true
     );

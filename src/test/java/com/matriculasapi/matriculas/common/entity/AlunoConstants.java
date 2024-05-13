@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class AlunoConstants {
     public static final Aluno ALUNO = new Aluno(
             1L,
-            "Jalim Rabei",
+            "Joao Silva",
             "09759576007",
             LocalDate.of(2024, 5, 11),
             true,
