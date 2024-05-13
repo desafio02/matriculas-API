@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "b4d51b9b-db85-405e-941d-b1a721945c2c",
+		"name": "Matriculas e Alunos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34109603"
+	},
+	"item": [
+		{
+			"name": "Alunos - Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"Jonas Roberto Leandro\",\n    \"cpf\": \"81049048768\",\n    \"dataNascimento\": \"12-12-1920\",\n    \"sexo\": \"M\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/v1/alunos",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v1",
+						"alunos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alunos - Patch",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/v1/alunos/81049048768",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v1",
+						"alunos",
+						"81049048768"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Matricula - Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"curso\": \"Java\",\n    \"cpf\": \"81049048768\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9000/api/v1/matriculas",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v1",
+						"matriculas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Matrículas - Patch",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "localhost:9000/api/v1/matriculas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v1",
+						"matriculas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Matricula - Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9000/api/v1/matriculas/Java",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"api",
+						"v1",
+						"matriculas",
+						"Java"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
