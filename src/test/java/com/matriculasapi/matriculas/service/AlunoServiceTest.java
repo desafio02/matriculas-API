@@ -1,10 +1,12 @@
 package com.matriculasapi.matriculas.service;
 
 import com.matriculasapi.matriculas.entity.Aluno;
+import com.matriculasapi.matriculas.entity.Matricula;
 import com.matriculasapi.matriculas.exception.ExcecaoCpfNaoEncontrado;
 import com.matriculasapi.matriculas.exception.ExcecaoDadoDuplicado;
 import com.matriculasapi.matriculas.exception.ExcecaoNaoEncontrado;
 import com.matriculasapi.matriculas.repository.AlunoRepository;
+import com.matriculasapi.matriculas.repository.MatriculaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,15 +17,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.matriculasapi.matriculas.common.entity.AlunoConstants.ALUNO_INVALIDO;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.matriculasapi.matriculas.common.entity.AlunoConstants.ALUNO;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AlunoServiceTest {
@@ -32,6 +34,9 @@ public class AlunoServiceTest {
 
     @Mock
     private AlunoRepository alunoRepository;
+
+    @Mock
+    private MatriculaRepository matriculaRepository;
 
     @Test
     public void criarAluno_ComDadosValidos_ReturnarAluno() {
@@ -85,5 +90,33 @@ public class AlunoServiceTest {
         Throwable thrown = assertThrows(ExcecaoCpfNaoEncontrado.class, () -> alunoService.buscarPorCpf("82746541020"));
 
         assertEquals("Número de CPF não encontrado", thrown.getMessage());
+    }
+    @Test
+    public void testAlterarStatusAtivo_AlunoAtivo() {
+        // Configuração do mock
+        Aluno aluno = new Aluno();
+        aluno.setId(1L);
+        aluno.setAtivo(true);
+
+        Matricula matricula = new Matricula();
+        matricula.setAlunoId(1L);
+
+        List<Matricula> matriculas = new ArrayList<>();
+        matriculas.add(matricula);
+
+        when(alunoRepository.findByCpf(anyString())).thenReturn(Optional.of(aluno));
+        when(matriculaRepository.findByAlunoId(anyLong())).thenReturn(Optional.of(matriculas));
+
+        // Chamada do método a ser testado
+        alunoService.alterarStatusAtivo("56254862042");
+
+        // Verificação se os métodos corretos foram chamados
+        verify(alunoRepository, times(1)).findByCpf("56254862042");
+        verify(matriculaRepository, times(1)).findByAlunoId(1L);
+        verify(matriculaRepository, times(1)).saveAll(matriculas);
+        verify(alunoRepository, times(1)).save(aluno);
+
+        // Verificação se o status foi alterado corretamente
+        assertTrue(!aluno.isAtivo());
     }
 }
