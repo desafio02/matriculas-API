@@ -1,5 +1,6 @@
 package com.matriculasapi.matriculas.mapper;
 
+import com.matriculasapi.matriculas.client.cursos.Curso;
 import com.matriculasapi.matriculas.client.cursos.CursoClient;
 import com.matriculasapi.matriculas.entity.Aluno;
 import com.matriculasapi.matriculas.entity.Matricula;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -41,26 +43,22 @@ public class MatriculaMapperTest {
 
     @Test
     public void testParaMatricula() {
-        MatriculaCreateDto createDto = new MatriculaCreateDto(
-                "Html/Css",
-                "56254862042"
-        );
+        MatriculaCreateDto createDto = new MatriculaCreateDto("Html/Css", "56254862042");
+        Long alunoId = 1L;
+        Long cursoId = 1L;
 
-        Matricula matricula = new Matricula(
-                1L,
-                1L,
-                2L,
-                true
-        );
+        Curso curso = new Curso(cursoId, "Html/Css", "Professor Teste", true);
+        when(cursoClient.buscarCursosPorNome("Html/Css")).thenReturn(curso);
 
-        when(MatriculaMapper.paraMatricula(createDto, alunoService, cursoClient)).thenReturn(matricula);
+        Aluno aluno = new Aluno();
+        aluno.setId(alunoId);
+        when(alunoService.buscarPorCpf("56254862042")).thenReturn(aluno);
 
-        Matricula sut = MatriculaMapper.paraMatricula(createDto, alunoService, cursoClient);
+        Matricula matricula = MatriculaMapper.paraMatricula(createDto, alunoService, cursoClient);
 
-        assertThat(sut).isEqualTo(matricula);
-        assertThat(sut.getId()).isEqualTo(matricula.getId());
-        assertThat(sut.getAlunoId()).isEqualTo(matricula.getAlunoId());
-        assertThat(sut.getCursoId()).isEqualTo(matricula.getCursoId());
+        assertEquals(cursoId, matricula.getCursoId());
+        assertEquals(alunoId, matricula.getAlunoId());
+        assertTrue(matricula.isStatus());
     }
 }
 
