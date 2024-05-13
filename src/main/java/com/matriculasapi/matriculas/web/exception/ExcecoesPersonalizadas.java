@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.net.ConnectException;
+
 @Slf4j
 @RestControllerAdvice
 public class ExcecoesPersonalizadas extends ResponseEntityExceptionHandler {
@@ -66,5 +68,14 @@ public class ExcecoesPersonalizadas extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new MensagemErro(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
+    @ExceptionHandler(ConnectException.class)
+    public ResponseEntity<Object> handleConnectException(HttpServletRequest request, ConnectException ex) {
+        log.error("Erro de conexão com API Cursos", ex);
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("API Cursos não disponível");
     }
 }
