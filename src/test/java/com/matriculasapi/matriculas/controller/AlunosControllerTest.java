@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matriculasapi.matriculas.entity.Aluno;
 import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.web.controller.AlunoController;
+import com.matriculasapi.matriculas.web.dto.AlunoCreateDto;
 import com.matriculasapi.matriculas.web.dto.AlunoResponseDto;
+import com.matriculasapi.matriculas.web.dto.mapper.AlunoMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -42,13 +44,10 @@ public class AlunosControllerTest {
 
     @Test
     public void salvarAluno_ComDadosValidos_RetornaAlunoResponseDto() throws Exception {
-        Aluno aluno = new Aluno (
-                1L,
+        AlunoCreateDto createDto = new AlunoCreateDto(
                 "Sand",
                 "09759576007",
-                LocalDate.of(2024, 5, 11),
-                true,
-                Aluno.Sexo.M
+                LocalDate.of(2024, 5, 11),"M"
         );
 
         AlunoResponseDto responseDto = new AlunoResponseDto(
@@ -57,11 +56,11 @@ public class AlunosControllerTest {
                 true
         );
 
-        given(alunoService.salvar(ArgumentMatchers.any())).willAnswer(invocation -> invocation.getArgument(0));
+        given(alunoService.salvar(ArgumentMatchers.any())).willReturn(AlunoMapper.paraAluno(createDto));
 
-        ResultActions response= mockMvc.perform(post("/api/v1/alunos")
+        ResultActions response = mockMvc.perform(post("/api/v1/alunos")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(responseDto)));
+                .content(objectMapper.writeValueAsString(createDto)));
 
         response.andExpect(MockMvcResultMatchers.status().isCreated());
     }
