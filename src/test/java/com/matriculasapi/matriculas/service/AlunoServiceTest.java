@@ -93,7 +93,6 @@ public class AlunoServiceTest {
     }
     @Test
     public void testAlterarStatusAtivo_AlunoAtivo() {
-        // Configuração do mock
         Aluno aluno = new Aluno();
         aluno.setId(1L);
         aluno.setAtivo(true);
@@ -107,16 +106,12 @@ public class AlunoServiceTest {
         when(alunoRepository.findByCpf(anyString())).thenReturn(Optional.of(aluno));
         when(matriculaRepository.findByAlunoId(anyLong())).thenReturn(Optional.of(matriculas));
 
-        // Chamada do método a ser testado
         alunoService.alterarStatusAtivo("56254862042");
 
-        // Verificação se os métodos corretos foram chamados
         verify(alunoRepository, times(1)).findByCpf("56254862042");
         verify(matriculaRepository, times(1)).findByAlunoId(1L);
         verify(matriculaRepository, times(1)).saveAll(matriculas);
         verify(alunoRepository, times(1)).save(aluno);
-
-        // Verificação se o status foi alterado corretamente
         assertTrue(!aluno.isAtivo());
     }
 }
