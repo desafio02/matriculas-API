@@ -8,6 +8,7 @@ import com.matriculasapi.matriculas.repository.MatriculaRepository;
 import com.matriculasapi.matriculas.service.AlunoService;
 import com.matriculasapi.matriculas.service.MatriculaService;
 import com.matriculasapi.matriculas.web.controller.MatriculaController;
+import com.matriculasapi.matriculas.web.dto.MatriculaResponseListAlunoDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -95,20 +96,35 @@ public class MatriculasControllerTest {
     }
 
     @Test
-    public void testBuscarMatriculasPorCursoId() { // esse aqui não está funcionando
-        Long cursoId = 1L;
+    public void testBuscarMatriculasPorCursoId() {
+        String nomeCurso = "teste";
+        Long idCurso = 1L;
+        Long idAluno = 1L;
+        Aluno aluno = new Aluno();
+        aluno.setId(idAluno);
+        aluno.setNome("Joao");
         Matricula matricula = new Matricula();
-        matricula.setCursoId(cursoId);
-        List<Matricula> matriculas = new ArrayList<>();
-        matriculas.add(matricula);
+        matricula.setId(1L);
+        matricula.setCursoId(idCurso);
+        matricula.setAlunoId(idAluno);
+        List<Matricula> matriculas = Collections.singletonList(matricula);
 
-        when(matriculaRepository.findByCursoId(cursoId)).thenReturn(Optional.of(matriculas));
+        when(cursoClient.buscarCursosPorNome(nomeCurso)).thenReturn(new Curso(idCurso, nomeCurso,
+                "Moacir", true));
+        when(matriculaService.buscarMatriculasPorCursoId(idCurso)).thenReturn(matriculas);
+        when(alunoService.buscarPorId(idAluno)).thenReturn(aluno);
 
-        List<Matricula> matriculasEncontradas = matriculaService.buscarMatriculasPorCursoId(cursoId);
+        ResponseEntity<MatriculaResponseListAlunoDto> responseEntity = matriculaController.consultarCurso(nomeCurso);
 
-        verify(matriculaRepository, times(1)).findByCursoId(cursoId);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 
-        assertEquals(matriculas, matriculasEncontradas);
+        MatriculaResponseListAlunoDto responseBody = responseEntity.getBody();
+        assertNotNull(responseBody);
+        assertEquals(nomeCurso, responseBody.getCurso());
+        assertEquals("Moacir", responseBody.getProfessor());
+        assertEquals(1, responseBody.getTotalAlunos());
+        assertEquals(1, responseBody.getAlunos().size());
+        assertEquals("Joao", responseBody.getAlunos().get(0).getNome());
     }
 
     @Test
